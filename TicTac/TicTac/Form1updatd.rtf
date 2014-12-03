@@ -1,0 +1,597 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+{\colortbl ;\red255\green255\blue0;}
+{\*\generator Riched20 6.2.9200}\viewkind4\uc1 
+\pard\f0\fs22\lang1033 using System;\par
+using System.Collections.Generic;\par
+using System.ComponentModel;\par
+using System.Data;\par
+using System.Data.SqlClient;\par
+using System.Drawing;\par
+using System.Linq;\par
+using System.Text;\par
+using System.Threading.Tasks;\par
+using System.Windows.Forms;\par
+\par
+namespace TicTac\par
+\{\par
+    public partial class Form1 : Form\par
+    \{\par
+        String turn = "X";\par
+        int count = 0;\par
+        bool singlePlyer = false;\par
+        SqlConnection connection;\par
+         \par
+         Button[] buttn=new Button[9];\par
+        Button[,] squares=new Button[3,3];\par
+        public Form1()\par
+        \{\par
+            \par
+            \par
+            InitializeComponent();\par
+           \par
+            \par
+        \}\par
+       \par
+      /* private void button1_Click(object sender, EventArgs e)\par
+        \{\par
+\par
+\par
+            squares[0, 0] = button1;\par
+            squares[0, 1] = button2;\par
+            squares[0, 2] = button3;\par
+            squares[1, 0] = button4;\par
+            squares[1, 1] = button5;\par
+            squares[1, 2] = button6;\par
+            squares[2, 0] = button7;\par
+            squares[2, 1] = button8;\par
+            squares[2, 2] = button9;\par
+\par
+\par
+            /* count++;\par
+            Button b = (Button)sender;\par
+            \par
+            \par
+                if (turn)\par
+                \{\par
+                    b.Text = "X";\par
+                   // ckeckWins();\par
+                \}\par
+                else\par
+                \{\par
+                    b.Text = "O";\par
+                   // ckeckWins();\par
+                \}\par
+                turn = !turn;\par
+            \par
+        \}\par
+        bool check_cnt() \{\par
+\par
+            if (count < 10)\par
+                return true;\par
+            else\par
+            \{\par
+                if(count==9)\par
+                    MessageBox.Show("Draw");\par
+\par
+                foreach (Button c in Controls)\par
+                \{\par
+\par
+                    Button b = (Button)c;\par
+                    b.Enabled = false;\par
+                \}\par
+                btnnewGame.Enabled = true;\par
+                btn_exit.Enabled = true;\par
+                btn_single.Enabled = true;\par
+                btn_Two.Enabled = true;\par
+                count = 0;\par
+                return false;\par
+            \}\par
+        \}*/\par
+\par
+\par
+        \par
+\par
+        private void btnnewGame_Click(object sender, EventArgs e)\par
+        \{ \par
+           MessageBox.Show("Welcome to Tic Tac Toe.\\n");\par
+\par
+           for (int i = 0; i < 9; i++)\par
+           \{\par
+               buttn[i].Text = ".";\par
+               buttn[i].Enabled = true;\par
+           \}\par
+          // play(0,0,"X");\par
+            Console.WriteLine("Game over.");\par
+        \par
+\par
+            \par
+            /* foreach (Button c in Controls)\par
+            \{\par
+                Button b = (Button)c;\par
+                b.Enabled = true;\par
+                if((b.Text!="New Game")&&(b.Text!="EXIT")&&(b.Text!="Two Player")&&(b.Text!="Single Player"))\par
+                    b.ResetText();\par
+            \}*/\par
+        \}\par
+\par
+        private void Form1_Load(object sender, EventArgs e)\par
+        \{\par
+            try\par
+            \{\par
+                connection.getCon();\par
+            \}\par
+            catch (Exception ex) \{\par
+                Console.Write(ex);\par
+            \}\highlight1\par
+            squares[0,0] = button1;\par
+            squares[0, 1] = button2;\par
+            squares[0, 2] = button3;\par
+            squares[1, 0] = button4;\par
+            squares[1, 1] = button5;\par
+            squares[1, 2] = button6;\par
+            squares[2, 0] = button7;\par
+            squares[2, 1] = button8;\par
+            squares[2, 2] = button9;\par
+            buttn[0]= button1;\par
+            buttn[1]= button2;\par
+            buttn[2]=button3;  \par
+            buttn[3]=button4;\par
+            buttn[4]=button5;\par
+            buttn[5]=button6; \par
+            buttn[6]=button7;\par
+            buttn[7]=button8;\par
+            buttn[8]=button9;\par
+\highlight0\par
+            for (int i = 0; i < 9; i++) \{\par
+                buttn[i].Text = ".";\par
+                buttn[i].Enabled = false;\par
+            \}\par
+            btnnewGame.Enabled = false;\par
+            \par
+        \}\par
+\par
+        private void btn_exit_Click(object sender, EventArgs e)\par
+        \{\par
+            this.Close();\par
+        \}\par
+\par
+        \highlight1 private void ckeckWins()\par
+        \{\par
+            bool winner = false; ;\par
+            String sym = null;\par
+\par
+            //horizontal\par
+            if ((button1.Text == button2.Text) && (button2.Text == button3.Text) && (button1.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button1.Text;\par
+            \}\par
+            else if ((button4.Text == button5.Text) && (button5.Text == button6.Text) && (button4.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button4.Text;\par
+            \}\par
+            else if ((button7.Text == button8.Text) && (button8.Text == button9.Text) && (button7.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button7.Text;\par
+            \}\par
+            //vertical\par
+            else if ((button1.Text == button4.Text) && (button4.Text == button7.Text) && (button1.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button1.Text;\par
+            \}\par
+            else if ((button2.Text == button5.Text) && (button5.Text == button8.Text) && (button2.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button2.Text;\par
+            \}\par
+            else if ((button3.Text == button6.Text) && (button6.Text == button9.Text) && (button3.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button3.Text;\par
+            \}\par
+            //\par
+            else if ((button1.Text == button5.Text) && (button5.Text == button9.Text) && (button1.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button1.Text;\par
+            \}\par
+            else if ((button3.Text == button5.Text) && (button5.Text == button7.Text) && (button3.Text != ""))\par
+            \{\par
+                winner = true;\par
+                sym = button3.Text;\par
+            \}\par
+\par
+            if (sym == "X" || sym == "O")\par
+            \{\par
+                if (winner)\par
+                \{\par
+                    MessageBox.Show(sym+" wins");\par
+                    for (int i = 0; i < 9; i++)\par
+                    \{\par
+                        buttn[i].Text = ".";\par
+                        buttn[i].Enabled = false;\par
+                    \}\par
+\highlight0\par
+\par
+                    save("","",sym);\par
+                \}\highlight1\par
+            \}\par
+           \par
+        \}\par
+\highlight0\par
+        \par
+\par
+        /** Return true if the game is over. */\par
+        \highlight1 public bool gameOver()\par
+        \{\par
+            if (myscore() != 0)\par
+            \{\par
+                return true;\par
+            \}\par
+            for (int row = 0; row < 3; row++)\par
+            \{\par
+                for (int column = 0; column < 3; column++)\par
+                \{\par
+                    if (squares[row,column].Text == ".")\par
+                    \{\par
+                        return false;\par
+                    \}\par
+                \}\par
+            \}\par
+            return true;\par
+        \}\par
+\highlight0\par
+        /** Return the value of the current position if it is O's turn. */\highlight1\par
+        protected int minimaxForO()\par
+        \{\par
+            int score = myscore();\par
+            if (gameOver())\par
+            \{\par
+                return score;\par
+            \}\par
+            int bestScore = 2;\par
+            for (int row = 0; row < 3; row++)\par
+            \{\par
+                for (int column = 0; column < 3; column++)\par
+                \{\par
+                    if (squares[row,column].Text == ".")\par
+                    \{\par
+                        squares[row,column].Text = "O";\par
+                        score = minimaxForX();\par
+                        if (score < bestScore)\par
+                        \{\par
+                            bestScore = score;\par
+                        \}\par
+                        squares[row,column].Text = ".";\par
+                    \}\par
+                \}\par
+            \}\par
+            return bestScore;\par
+        \}\par
+\highlight0\par
+        /** Return the value of the current position if it is X's turn. */\par
+        \highlight1 protected int minimaxForX()\par
+        \{\par
+            int score = myscore();\par
+            if (gameOver())\par
+            \{\par
+                return score;\par
+            \}\par
+            int bestScore = -2;\par
+            for (int row = 0; row < 3; row++)\par
+            \{\par
+                for (int column = 0; column < 3; column++)\par
+                \{\par
+                    if (squares[row,column].Text == ".")\par
+                    \{\par
+                        squares[row,column].Text = "X";\par
+                        score = minimaxForO();\par
+                        if (score > bestScore)\par
+                        \{\par
+                            bestScore = score;\par
+                        \}\par
+                        squares[row,column].Text = ".";\par
+                    \}\par
+                \}\par
+            \}\par
+            return bestScore;\par
+        \}\par
+\par
+\highlight0         /** Play one game. */\par
+        \highlight1 public void play(int rw,int colom,String plr)\par
+        \{\par
+            String player = plr;\par
+                for (int i = 0; i < 2; i++)\par
+                \{\par
+\par
+                    if (gameOver())\par
+                    \{\par
+                        return;\par
+                    \}\par
+                    if (player == "X")\par
+                    \{\par
+                        playBestMove();\par
+                        player = "O";\par
+                        break;\par
+                    \}\par
+                    else\par
+                    \{\par
+\par
+                        int row = rw;\par
+                        int column = colom;\par
+                        squares[row, column].Text = "O";\par
+                        player = "X";\par
+                    \}\par
+                \}\par
+            \par
+        \}\par
+\highlight0\par
+        /** Find the best move for X and play it on the board. */\highlight1\par
+        protected void playBestMove()\par
+        \{\par
+            int score;\par
+            int bestScore = -2;\par
+            int bestRow = -1;\par
+            int bestColumn = -1;\par
+            for (int row = 0; row < 3; row++)\par
+            \{\par
+                for (int column = 0; column < 3; column++)\par
+                \{\par
+                    if (squares[row, column].Text == ".")\par
+                    \{\par
+                        squares[row, column].Text ="X";\par
+                        score = minimaxForO();\par
+                        if (score > bestScore)\par
+                        \{\par
+                            bestScore = score;\par
+                            bestRow = row;\par
+                            bestColumn = column;\par
+                        \}\par
+                        squares[row,column].Text = ".";\par
+                    \}\par
+                \}\par
+            \}\par
+            squares[bestRow,bestColumn].Text = "X";\par
+        \}\par
+\highlight0\par
+        /** Return 1 if X has won, -1 if O has won, and 0 otherwise. */\highlight1\par
+        public int myscore()\par
+        \{\par
+            int lineScore;\par
+            for (int i = 0; i < 3; i++)\par
+            \{\par
+                lineScore = scoreLine(squares[i,0].Text,\par
+                                     squares[i,1].Text,\par
+                                     squares[i,2].Text);\par
+                if (lineScore != 0)\par
+                \{\par
+                    return lineScore;\par
+                \}\par
+                lineScore = scoreLine(squares[0,i].Text,\par
+                                     squares[1,i].Text,\par
+                                     squares[2,i].Text);\par
+                if (lineScore != 0)\par
+                \{\par
+                    return lineScore;\par
+                \}\par
+            \}\par
+            lineScore = scoreLine(squares[0,0].Text,\par
+                                 squares[1,1].Text,\par
+                                 squares[2,2].Text);\par
+            if (lineScore != 0)\par
+            \{\par
+                return lineScore;\par
+            \}\par
+            return scoreLine(squares[0,2].Text, squares[1,1].Text, squares[2,0].Text);\par
+        \}\par
+\highlight0\par
+        /** \par
+         * Return 1 if all three characters are 'X', -1 if they are all 'O', \par
+         * and 0 otherwise. \par
+         */\par
+        \highlight1 protected int scoreLine(String a, String b, String c)\par
+        \{\par
+            if ((a == "X") && (b =="X") && (c == "X")) \{\par
+\par
+               \par
+                return 1; \}\par
+            if ((a == "O") && (b == "O") && (c == "O")) \{\par
+               \par
+                return -1; \}\par
+            return 0;\par
+        \}\par
+\highlight0\par
+        public String toString()\par
+        \{\par
+            String result = "";\par
+            for (int row = 0; row < 3; row++)\par
+            \{\par
+                for (int column = 0; column < 3; column++)\par
+                \{\par
+                    result += squares[row,column];\par
+                \}\par
+                result += "\\n";\par
+            \}\par
+            return result;\par
+        \}\par
+\par
+        private void button1_Click_1(object sender, EventArgs e)\par
+        \{\par
+            \highlight1 if (singlePlyer == true)\par
+                play(0, 0, "O");\par
+            else\par
+            \{\par
+                button1.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+\par
+\par
+\par
+\par
+\highlight0         \}\par
+\par
+        private void button2_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(0, 1, "O");\par
+            else\par
+            \{\par
+                button2.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+        \}\par
+\par
+        private void button3_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(0, 2, "O");\par
+            else\par
+            \{\par
+                button3.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button4_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(1, 0, "O");\par
+            else\par
+            \{\par
+                button4.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button5_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(1, 1, "O");\par
+            else\par
+            \{\par
+                button5.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button6_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(1, 2, "O");\par
+            else\par
+            \{\par
+                button6.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button7_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(2, 0, "O");\par
+            else\par
+            \{\par
+                button7.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button8_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(2, 1, "O");\par
+            else\par
+            \{\par
+                button8.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void button9_Click(object sender, EventArgs e)\par
+        \{\par
+            if (singlePlyer == true)\par
+                play(2, 2, "O");\par
+            else\par
+            \{\par
+                button9.Text = turn;\par
+                if (turn == "X")\par
+                    turn = "O";\par
+                else\par
+                    turn = "X";\par
+            \}\par
+            ckeckWins();\par
+           \par
+        \}\par
+\par
+        private void btn_Two_Click(object sender, EventArgs e)\par
+        \{\par
+            singlePlyer = false;\par
+            btnnewGame.Enabled = true;\par
+\par
+        \}\par
+\par
+        private void btn_single_Click(object sender, EventArgs e)\par
+        \{\par
+            singlePlyer = true;\par
+            btnnewGame.Enabled = true;\par
+\par
+        \}\par
+\par
+        private void btrn_Click(object sender, EventArgs e)\par
+        \{\par
+            if(singlePlyer==true)\par
+                squares[1,1].Text = "X";\par
+        \}\par
+\par
+       \par
+\par
+    \}\par
+\}\par
+   \par
+\par
+\par
+   \par
+\par
+}
+ 
